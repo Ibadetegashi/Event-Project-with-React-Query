@@ -3,14 +3,18 @@ import { useMutation } from "@tanstack/react-query";
 
 import Modal from "../UI/Modal.jsx";
 import EventForm from "./EventForm.jsx";
-import { createNewEvent } from "../../util/http.js";
+import { createNewEvent, queryClient } from "../../util/http.js";
 import ErrorBlock from "../UI/ErrorBlock.jsx";
 
 export default function NewEvent() {
+  const navigate = useNavigate();
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: createNewEvent,
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['events']}) //will satle data all queries that have events key, triggering refetch
+      navigate("/events");
+    },
   });
-  const navigate = useNavigate();
 
   function handleSubmit(formData) {
     mutate({ event: formData }); //this mutate calls the createNewEvent
