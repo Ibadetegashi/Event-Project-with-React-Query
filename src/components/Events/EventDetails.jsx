@@ -96,7 +96,7 @@ export default function EventDetails() {
   return (
     <>
       {isDeleting && (
-        <Modal>
+        <Modal onClose={handleCancelDelete}>
           <h2>Are you sure you want to delete this event?</h2>
           <p>This action cannot be undone!!</p>
 
